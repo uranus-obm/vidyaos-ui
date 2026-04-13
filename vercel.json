@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/marketplace", "destination": "/marketplace.html" },
+    { "source": "/feedback", "destination": "/feedback.html" }
+  ]
+}

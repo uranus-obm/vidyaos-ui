@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Feedback — VidyaOS Student Voices</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 700px 400px at 80% -10%,rgba(125,206,148,.07),transparent),radial-gradient(ellipse 500px 350px at 10% 80%,rgba(96,200,232,.04),transparent);}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+
+/* PAGE HEADER */
+.page-hero{max-width:1060px;margin:0 auto;padding:60px 32px 48px;display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:start;}
+.ph-eyebrow{display:inline-flex;align-items:center;gap:7px;padding:4px 13px;border:1px solid rgba(125,206,148,.28);border-radius:999px;background:rgba(125,206,148,.08);margin-bottom:16px;}
+.ph-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);}
+.ph-tag{font-size:10px;font-weight:700;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;}
+.ph-h{font-size:clamp(28px,4.5vw,50px);font-weight:800;letter-spacing:-.025em;color:var(--text);line-height:1.08;margin-bottom:10px;opacity:0;animation:rise .5s var(--ease-out) .1s forwards;}
+.ph-h .acc{color:var(--lime);}
+.ph-sub{font-size:14px;color:var(--text2);line-height:1.65;opacity:0;animation:rise .5s var(--ease-out) .2s forwards;}
+
+/* STATS CLUSTER */
+.stats-cluster{display:flex;flex-direction:column;gap:10px;opacity:0;animation:rise .5s var(--ease-out) .3s forwards;}
+.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;transition:background .3s,border-color .3s;}
+.sc-num{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-.02em;}
+.sc-num .unit{font-size:16px;color:var(--text3);}
+.sc-lbl{font-size:11px;color:var(--text3);margin-top:2px;}
+.sc-stars{display:flex;gap:3px;margin-top:4px;}
+.sc-star{font-size:16px;color:var(--amber);}
+.sc-bar-wrap{display:flex;flex-direction:column;gap:5px;margin-top:12px;}
+.scb-row{display:flex;align-items:center;gap:8px;}
+.scb-num{font-size:11px;color:var(--text3);width:20px;text-align:right;}
+.scb-bar{flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.scb-fill{height:100%;background:var(--amber);border-radius:3px;}
+.scb-count{font-size:10px;color:var(--text3);width:24px;}
+
+/* WRITE FORM */
+.write-wrap{max-width:1060px;margin:0 auto;padding:0 32px 36px;}
+.write-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:32px;position:relative;overflow:hidden;transition:background .3s,border-color .3s;opacity:0;animation:rise .55s var(--ease-out) .35s forwards;}
+.write-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--lime),transparent);}
+.write-card-h{font-size:18px;font-weight:800;color:var(--text);margin-bottom:4px;}
+.write-card-s{font-size:12px;color:var(--text3);margin-bottom:24px;}
+
+/* USER PROFILE INPUT */
+.profile-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+.pi-wrap{display:flex;flex-direction:column;gap:5px;}
+.pi-label{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.04em;}
+.pi-input{font-family:var(--font);font-size:13px;background:var(--input-bg,var(--surface2));border:1px solid var(--border2);border-radius:var(--r-md);padding:10px 14px;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;}
+.pi-input:focus{border-color:rgba(125,206,148,.45);box-shadow:0 0 0 3px rgba(125,206,148,.08);}
+.pi-input::placeholder{color:var(--text3);}
+select.pi-input option{background:var(--surface);}
+
+/* AVATAR PICKER */
+.avatar-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.avatar-preview{width:48px;height:48px;border-radius:50%;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid rgba(125,206,148,.4);transition:background .2s;}
+.avatar-colors{display:flex;gap:6px;}
+.avatar-color-dot{width:24px;height:24px;border-radius:50%;cursor:pointer;transition:transform .2s var(--ease-spring);border:2px solid transparent;}
+.avatar-color-dot:hover{transform:scale(1.2);}
+.avatar-color-dot.sel{border-color:var(--text);}
+.avatar-label{font-size:11px;color:var(--text3);}
+
+/* STAR RATING INPUT */
+.star-rating-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.star-rating-label{font-size:13px;font-weight:600;color:var(--text2);}
+.star-rating-stars{display:flex;gap:4px;}
+.sr-star{font-size:32px;cursor:pointer;opacity:.3;transition:opacity .15s,transform .2s var(--esp);user-select:none;will-change:transform;}
+.sr-star.lit{opacity:1;}
+.sr-star:hover{transform:scale(1.25);}
+.star-rating-text{font-size:12px;color:var(--text3);font-style:italic;}
+
+/* CATEGORY CHIPS */
+.cat-chip-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px;}
+.cat-chip{padding:7px 14px;border-radius:999px;border:1px solid var(--border2);background:var(--surface2);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .18s var(--ease);user-select:none;}
+.cat-chip:hover{border-color:rgba(125,206,148,.3);color:var(--text);transform:scale(1.03);}
+.cat-chip.sel{background:var(--lime-soft,rgba(125,206,148,.14));border-color:rgba(125,206,148,.5);color:var(--lime);}
+
+/* TEXTAREA */
+.feedback-textarea{width:100%;font-family:var(--font);font-size:13px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r-md);padding:13px 16px;color:var(--text);outline:none;resize:none;line-height:1.65;transition:border-color .2s,box-shadow .2s;margin-bottom:6px;}
+.feedback-textarea:focus{border-color:rgba(125,206,148,.45);box-shadow:0 0 0 3px rgba(125,206,148,.08);}
+.feedback-textarea::placeholder{color:var(--text3);}
+.char-info{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:16px;}
+
+/* MEDIA TAGS */
+.media-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.media-tag{padding:7px 14px;border-radius:999px;border:1px solid var(--border2);font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .18s;}
+.media-tag:hover{background:var(--surface3);color:var(--text);}
+.media-tag.sel{background:var(--lime-soft,rgba(125,206,148,.14));border-color:rgba(125,206,148,.4);color:var(--lime);}
+
+/* SUBMIT BTN */
+.submit-btn{width:100%;padding:15px;font-size:15px;border-radius:var(--r-md);border:none;background:var(--lime);color:#0d2012;font-family:var(--font);font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.submit-btn:hover{background:var(--lime-dark,#5db578);transform:translateY(-1px);}
+.submit-btn:active{transform:scale(.97);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* SUCCESS TOAST */
+.success-banner{display:none;align-items:center;gap:12px;background:rgba(125,206,148,.09);border:1px solid rgba(125,206,148,.3);border-radius:var(--r-md);padding:14px 18px;margin-top:16px;}
+.success-banner.show{display:flex;animation:rise .3s var(--ease-out) forwards;}
+.sb-icon{width:36px;height:36px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;animation:pop .4s var(--esp) forwards;}
+
+/* WALL */
+.wall-wrap{max-width:1060px;margin:0 auto;padding:0 32px 80px;}
+.wall-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.wall-title{font-size:18px;font-weight:800;color:var(--text);}
+.wall-filters{display:flex;gap:6px;flex-wrap:wrap;}
+.wf-btn{padding:6px 14px;border-radius:999px;border:1px solid var(--border2);background:transparent;font-family:var(--font);font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;transition:all .18s;}
+.wf-btn:hover,.wf-btn.on{background:var(--lime-soft,rgba(125,206,148,.14));border-color:rgba(125,206,148,.4);color:var(--lime);}
+.wall-sort{font-family:var(--font);font-size:12px;font-weight:600;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-sm);padding:7px 12px;color:var(--text2);cursor:pointer;outline:none;}
+
+/* REVIEW CARDS */
+.wall-masonry{column-count:3;column-gap:14px;}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;break-inside:avoid;margin-bottom:14px;transition:transform .22s var(--ease),border-color .22s,background .3s;cursor:default;opacity:0;transform:translateY(12px);}
+.review-card:hover{transform:translateY(-3px);border-color:var(--border2);}
+.review-card.in{animation:rise .4s var(--ease-out) forwards;}
+
+/* REVIEWER HEADER */
+.rv-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.rv-user-info{display:flex;align-items:center;gap:10px;}
+.rv-avatar-big{width:42px;height:42px;border-radius:50%;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
+.rv-verified-badge{position:absolute;bottom:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:var(--lime);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#071208;border:2px solid var(--surface);}
+.rv-name-wrap{}
+.rv-display-name{font-size:14px;font-weight:700;color:var(--text);}
+.rv-meta-row{display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap;}
+.rv-class-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--surface2);color:var(--text3);}
+.rv-feature-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(125,206,148,.12);color:var(--lime);border:1px solid rgba(125,206,148,.2);}
+.rv-date-text{font-size:10px;color:var(--text3);}
+.rv-stars-right{display:flex;gap:2px;}
+.rv-star-r{font-size:13px;color:var(--amber);}
+.rv-star-r.empty{color:var(--surface3);}
+
+/* REVIEW BODY */
+.rv-category-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;margin-bottom:10px;border:1px solid;}
+.rv-text{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:12px;}
+.rv-highlight{background:rgba(125,206,148,.1);border-left:3px solid var(--lime);padding:6px 10px;border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:12px;color:var(--text2);font-style:italic;margin-bottom:12px;}
+.rv-feature-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.rv-ftag{font-size:10px;padding:3px 9px;border-radius:999px;background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
+
+/* REACTION ROW */
+.rv-reactions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.reaction-btn{display:flex;align-items:center;gap:4px;padding:5px 11px;border-radius:999px;border:1px solid var(--border2);background:transparent;font-family:var(--font);font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;transition:all .15s;}
+.reaction-btn:hover{border-color:rgba(125,206,148,.3);color:var(--text);}
+.reaction-btn.reacted{background:var(--lime-soft,rgba(125,206,148,.12));border-color:rgba(125,206,148,.35);color:var(--lime);}
+.reaction-count{font-size:10px;}
+.rv-reply-btn{margin-left:auto;font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:var(--font);font-weight:600;transition:color .15s;}
+.rv-reply-btn:hover{color:var(--lime);}
+
+/* REPLY BOX */
+.reply-box{display:none;background:var(--surface2);border-radius:var(--r-sm);padding:10px;margin-top:10px;}
+.reply-box.open{display:block;}
+.reply-input{width:100%;font-family:var(--font);font-size:12px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-sm);padding:8px 12px;color:var(--text);outline:none;resize:none;transition:border-color .2s;}
+.reply-input:focus{border-color:rgba(125,206,148,.4);}
+.reply-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:6px;}
+.reply-cancel{font-family:var(--font);font-size:11px;font-weight:600;padding:5px 12px;border-radius:var(--r-sm);border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;}
+.reply-submit{font-family:var(--font);font-size:11px;font-weight:700;padding:5px 12px;border-radius:var(--r-sm);border:none;background:var(--lime);color:#071208;cursor:pointer;}
+
+/* REPLIES */
+.replies-list{margin-top:10px;border-left:2px solid var(--border2);padding-left:12px;display:flex;flex-direction:column;gap:8px;}
+.reply-item{font-size:12px;color:var(--text2);}
+.reply-author{font-weight:700;color:var(--text);margin-right:5px;}
+
+/* LOAD MORE */
+.load-more-wrap{text-align:center;margin-top:8px;}
+.load-more-btn{font-family:var(--font);font-size:13px;font-weight:600;padding:12px 32px;border-radius:999px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .2s;}
+.load-more-btn:hover{background:var(--surface);color:var(--text);border-color:var(--border3);}
+
+/* TOAST */
+.toast-stack{position:fixed;bottom:20px;right:20px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast-item{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r-md);padding:11px 17px;display:flex;align-items:center;gap:9px;font-size:12px;font-weight:600;color:var(--text);box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;transform:translateX(16px);transition:all .22s;}
+.toast-item.show{opacity:1;transform:none;}
+.t-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.t-dot.lime{background:var(--lime);}.t-dot.amber{background:var(--amber);}
+
+@media(max-width:860px){.page-hero{grid-template-columns:1fr;}.wall-masonry{column-count:2;}.profile-row{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.wall-masonry{column-count:1;}.profile-row{grid-template-columns:1fr;}}
+
+:root{--r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;--surface3:#525254;--lime-soft:rgba(125,206,148,.13);}
+[data-theme=light]{--surface3:#eeecf0;}
+</style>
+</head>
+<body>
+
+<nav style="animation:sdown .4s ease forwards;">
+  <div class="ni">
+    <a href="index.html" class="brand"><span class="bn">VidyaOS</span><span class="bt">Student Voices</span></a>
+    <div class="nr">
+      <button class="tt" id="tt" aria-label="Toggle theme">🌙</button>
+      <a href="marketplace.html" class="btn bg_">Marketplace</a>
+      <a href="index.html" class="btn bg_">← Home</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-hero">
+  <div>
+    <div class="ph-eyebrow"><div class="ph-dot"></div><span class="ph-tag">100% Honest Student Reviews</span></div>
+    <h1 class="ph-h">What students<br>actually <span class="acc">think.</span></h1>
+    <p class="ph-sub">Real experiences from CBSE students who use VidyaOS every day. No filters, no spin — just what works and what doesn't.</p>
+  </div>
+  <div class="stats-cluster">
+    <div class="sc-card">
+      <div class="sc-num">4.8 <span class="unit">/ 5</span></div>
+      <div class="sc-stars" id="overallStars"></div>
+      <div class="sc-lbl" id="overallCount">— reviews</div>
+      <div class="sc-bar-wrap" id="ratingBars"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WRITE FEEDBACK -->
+<div class="write-wrap">
+  <div class="write-card">
+    <h2 class="write-card-h">Share your experience</h2>
+    <p class="write-card-s">Takes about 2 minutes. Helps thousands of CBSE students make smarter choices.</p>
+
+    <!-- Avatar + Name -->
+    <div style="margin-bottom:16px;">
+      <div class="pi-label" style="margin-bottom:8px;">Your profile (optional)</div>
+      <div class="avatar-row">
+        <div class="avatar-preview" id="avatarPreview" style="background:#3a5fcd22;color:#3a5fcd;">?</div>
+        <div class="avatar-colors" id="avatarColors"></div>
+        <span class="avatar-label">Pick a colour</span>
+      </div>
+    </div>
+    <div class="profile-row">
+      <div class="pi-wrap"><span class="pi-label">Display name</span><input class="pi-input" id="pName" placeholder="e.g. Arjun S." maxlength="30" oninput="updateAvatarPreview()"/></div>
+      <div class="pi-wrap"><span class="pi-label">Class / Board</span><input class="pi-input" id="pClass" placeholder="e.g. Class 12 PCM" maxlength="30"/></div>
+      <div class="pi-wrap"><span class="pi-label">School / City</span><input class="pi-input" id="pSchool" placeholder="e.g. DPS, Delhi" maxlength="30"/></div>
+    </div>
+
+    <!-- Star Rating -->
+    <div class="star-rating-row">
+      <span class="star-rating-label">Your rating</span>
+      <div class="star-rating-stars" id="starRow">
+        <span class="sr-star" data-v="1">★</span>
+        <span class="sr-star" data-v="2">★</span>
+        <span class="sr-star" data-v="3">★</span>
+        <span class="sr-star" data-v="4">★</span>
+        <span class="sr-star" data-v="5">★</span>
+      </div>
+      <span class="star-rating-text" id="ratingLabel">Click a star to rate</span>
+    </div>
+
+    <!-- Category -->
+    <div style="margin-bottom:8px;font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.04em;">What are you reviewing?</div>
+    <div class="cat-chip-row" id="catChips"></div>
+
+    <!-- Feature tags -->
+    <div style="margin-bottom:8px;font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.04em;">Highlight (optional)</div>
+    <div class="media-row" id="featureTags"></div>
+
+    <!-- Text -->
+    <textarea class="feedback-textarea" id="feedbackText" rows="4" maxlength="600" placeholder="What's working? What could be better? A specific feature you love — or wish existed?" oninput="updateCharCount()"></textarea>
+    <div class="char-info"><span id="charCount">0 / 600</span><span id="charHint" style="color:var(--text3);"></span></div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">Submit feedback →</button>
+    <div class="success-banner" id="successBanner">
+      <div class="sb-icon">✓</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--lime);">Thank you — feedback received!</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px;">It's live on the wall right now. Others will see it instantly.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WALL -->
+<div class="wall-wrap">
+  <div class="wall-toolbar">
+    <div class="wall-title">Student Voices <span id="wallCountBadge" style="font-size:13px;color:var(--text3);font-weight:400;"></span></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <div class="wall-filters" id="wallFilters"></div>
+      <select class="wall-sort" id="wallSort" onchange="renderWall()">
+        <option value="newest">Newest first</option>
+        <option value="helpful">Most helpful</option>
+        <option value="rating-high">Highest rated</option>
+        <option value="rating-low">Lowest rated</option>
+      </select>
+    </div>
+  </div>
+  <div class="wall-masonry" id="wallGrid"></div>
+  <div class="load-more-wrap">
+    <button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">Load more reviews</button>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<footer><div class="fi2"><span class="fbrand">VidyaOS</span><div class="flinks"><a href="index.html">Home</a><a href="marketplace.html">Marketplace</a><a href="feedback.html">Feedback</a></div><span class="fcopy">© 2025 VidyaOS. All reviews are from verified CBSE students.</span></div></footer>
+
+<script>
+/* ── TOKENS ── */
+const AVATAR_COLORS=['#3a5fcd','#cc3333','#2d8c3e','#7c3acd','#c87820','#e05090','#1a96b0','#7dce94'];
+const RATING_LABELS={1:'Poor',2:'Fair',3:'Good',4:'Great',5:'Excellent'};
+const CATS=[
+  {key:'AI Features',icon:'🧠',tag:'tag-ai',bg:'rgba(125,206,148,.12)',color:'var(--lime)',border:'rgba(125,206,148,.25)'},
+  {key:'Streak System',icon:'🔥',tag:'tag-streak',bg:'rgba(240,160,48,.1)',color:'#f0a030',border:'rgba(240,160,48,.25)'},
+  {key:'Memory / Notes',icon:'💾',tag:'tag-mem',bg:'rgba(96,200,232,.1)',color:'#60c8e8',border:'rgba(96,200,232,.25)'},
+  {key:'Tasks & Focus',icon:'⚡',tag:'tag-tasks',bg:'rgba(224,96,200,.1)',color:'#e060c8',border:'rgba(224,96,200,.25)'},
+  {key:'Community',icon:'💬',tag:'tag-comm',bg:'rgba(160,126,232,.1)',color:'#a07ee8',border:'rgba(160,126,232,.25)'},
+  {key:'UI / Design',icon:'✨',tag:'tag-ui',bg:'rgba(240,200,48,.1)',color:'#f0c830',border:'rgba(240,200,48,.25)'},
+  {key:'Marketplace',icon:'🛒',tag:'tag-mkt',bg:'rgba(125,206,148,.1)',color:'var(--lime)',border:'rgba(125,206,148,.2)'},
+  {key:'General',icon:'📝',tag:'tag-gen',bg:'rgba(150,150,180,.1)',color:'var(--text2)',border:'var(--border2)'},
+];
+const FEATURE_TAGS=['Easy to use','Saved time','Improved marks','Great UI','Helpful AI','Study streak','Fast loading','Mobile friendly','Value for money','CBSE focused'];
+
+let userRating=0, selectedCat='', selectedFeatures=[], selectedAvatarColor=AVATAR_COLORS[0];
+let wallFilter='All', wallShown=9;
+
+/* ── SEED REVIEWS ── */
+const SEED=[
+  {id:1,name:'Priya M.',class:'Class 12, Science',school:'DPS, Delhi',rating:5,cat:'AI Features',text:'The AI Doubt Solver saved me during my Physics prep. It explains CBSE derivations in exactly the way the marking scheme expects. No other app does this.',highlight:'Explains derivations the way the marking scheme expects.',features:['CBSE focused','Helpful AI','Improved marks'],helpful:18,hearts:12,replies:[{author:'VidyaOS',text:'Thank you Priya! 🎉 More Physics updates coming soon.'}],date:'Today, 2:10 PM',avatar:'#7dce94',initials:'PM',featured:true,verified:true},
+  {id:2,name:'Rohan K.',class:'Class 11, Commerce',school:'Kendriya Vidyalaya',rating:5,cat:'Streak System',text:"That streak counter is dangerously addictive. I haven't missed a single study day in 40 days. My parents think I've been replaced by a studious clone. Streak shields saved me twice during cricket matches.",features:['Study streak','Easy to use'],helpful:15,hearts:9,replies:[],date:'Today, 11:20 AM',avatar:'#f0a030',initials:'RK',featured:false,verified:true},
+  {id:3,name:'Ananya S.',class:'Class 10',school:'Ryan International',rating:4,cat:'Memory / Notes',text:'The auto-summaries are genuinely good. I paste a photo of my handwritten notes and it generates revision cards. Would love offline support though.',features:['Saved time','Great UI'],helpful:11,hearts:7,replies:[],date:'Yesterday, 7:45 PM',avatar:'#60c8e8',initials:'AS',featured:false,verified:false},
+  {id:4,name:'Vikram T.',class:'Class 12, PCM',school:'Amity School, Noida',rating:5,cat:'UI / Design',text:'Finally a study app that looks like it was designed by someone who actually cares. The dark mode is gorgeous and every animation feels considered. This is the Apple of study apps.',highlight:'This is the Apple of study apps.',features:['Great UI','Fast loading','Mobile friendly'],helpful:22,hearts:14,replies:[],date:'Yesterday, 3:05 PM',avatar:'#e0607a',initials:'VT',featured:true,verified:true},
+  {id:5,name:'Sneha R.',class:'Class 9',school:'Podar International',rating:4,cat:'General',text:'I used to juggle 5 different apps for notes, timers, and doubt solving. VidyaOS replaced all of them. Still waiting for the mobile app but the web version works great on phone.',features:['Saved time','Value for money'],helpful:9,hearts:6,replies:[],date:'2 days ago',avatar:'#a080e0',initials:'SR',featured:false,verified:true},
+  {id:6,name:'Arjun D.',class:'Class 11, PCB',school:'St. Xavier\'s, Mumbai',rating:5,cat:'Tasks & Focus',text:'The Pomodoro timer inside Tasks is the best implementation I have seen anywhere. It locks notifications during focus time and plays a satisfying chime. Brain chemistry changing.',highlight:'Locks notifications during focus — brain chemistry changing.',features:['Easy to use','Study streak','Helpful AI'],helpful:14,hearts:10,replies:[{author:'Priya M.',text:'100% agree, the focus timer is next level!'},{author:'VidyaOS',text:'Love hearing this! 🔥 Focus insights coming in next update.'}],date:'2 days ago',avatar:'#7dce94',initials:'AD',featured:false,verified:true},
+  {id:7,name:'Meghna P.',class:'Class 12, Humanities',school:'Modern School',rating:4,cat:'AI Features',text:'Vidya actually understands CBSE History — other AI tools just give generic answers. The source-based question practice is incredibly helpful for board preparation.',features:['CBSE focused','Helpful AI','Improved marks'],helpful:8,hearts:5,replies:[],date:'3 days ago',avatar:'#f0a030',initials:'MP',featured:false,verified:false},
+  {id:8,name:'Kiran B.',class:'Class 10',school:'DAV School',rating:5,cat:'Streak System',text:'Streak shields are my absolute favourite feature. I travelled for a wedding for 3 days and did not lose my 30-day streak. The team clearly understands student life.',features:['Study streak','CBSE focused'],helpful:12,hearts:8,replies:[],date:'3 days ago',avatar:'#60c8e8',initials:'KB',featured:false,verified:true},
+  {id:9,name:'Nisha G.',class:'Class 11, Commerce',school:'Heritage School',rating:5,cat:'Memory / Notes',text:'The spaced repetition on flashcards is actually working. My Economics definitions went from disaster-level to 90%+ retention in three weeks. Backed by real science.',highlight:'90%+ retention in three weeks.',features:['Improved marks','CBSE focused','Value for money'],helpful:16,hearts:11,replies:[],date:'4 days ago',avatar:'#e0607a',initials:'NG',featured:true,verified:true},
+  {id:10,name:'Dev P.',class:'Class 12, PCM',school:'IIT JEE Academy',rating:5,cat:'UI / Design',text:'Someone finally made a light mode that does not look like a government form from 2006. Clean, minimal, fast. I\'ve recommended VidyaOS to my entire coaching batch.',features:['Great UI','Fast loading','Easy to use'],helpful:19,hearts:13,replies:[],date:'5 days ago',avatar:'#a080e0',initials:'DP',featured:true,verified:true},
+  {id:11,name:'Tanvi A.',class:'Class 9',school:'Presidium School',rating:4,cat:'Community',text:'My whole friend group switched to VidyaOS this semester. The community feed for sharing doubt solutions is brilliant — basically crowd-sourced revision. Would love more subject-specific channels.',features:['CBSE focused','Easy to use'],helpful:7,hearts:4,replies:[],date:'5 days ago',avatar:'#7dce94',initials:'TA',featured:false,verified:false},
+  {id:12,name:'Anonymous',class:'',school:'',rating:5,cat:'AI Features',text:'Vidya answered a Maths integration question at 2am that my tutor could not explain clearly. The step-by-step breakdown with specific marking scheme notes was perfect.',features:['Helpful AI','CBSE focused'],helpful:10,hearts:7,replies:[],date:'1 week ago',avatar:'#f0a030',initials:'?',featured:false,verified:false},
+];
+
+let allReviews=[...SEED];
+
+/* ── BUILD UI ── */
+function buildAvatarPicker(){
+  const wrap=document.getElementById('avatarColors');
+  AVATAR_COLORS.forEach((c,i)=>{
+    const dot=document.createElement('div');
+    dot.className='avatar-color-dot'+(i===0?' sel':'');
+    dot.style.cssText=`background:${c};`;
+    dot.onclick=()=>{selectedAvatarColor=c;document.querySelectorAll('.avatar-color-dot').forEach(d=>d.classList.remove('sel'));dot.classList.add('sel');updateAvatarPreview();};
+    wrap.appendChild(dot);
+  });
+}
+function updateAvatarPreview(){
+  const name=document.getElementById('pName').value.trim()||'?';
+  const initials=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const el=document.getElementById('avatarPreview');
+  el.textContent=initials;el.style.background=selectedAvatarColor+'22';el.style.color=selectedAvatarColor;
+}
+function buildStarRow(){
+  document.querySelectorAll('.sr-star').forEach(s=>{
+    s.onmouseenter=()=>highlightStars(+s.dataset.v);
+    s.onmouseleave=()=>highlightStars(userRating);
+    s.onclick=()=>{userRating=+s.dataset.v;highlightStars(userRating);document.getElementById('ratingLabel').textContent=RATING_LABELS[userRating]||'';};
+  });
+}
+function highlightStars(v){document.querySelectorAll('.sr-star').forEach(s=>s.classList.toggle('lit',+s.dataset.v<=v));}
+function buildCatChips(){
+  const wrap=document.getElementById('catChips');
+  CATS.forEach(c=>{const ch=document.createElement('div');ch.className='cat-chip';ch.textContent=`${c.icon} ${c.key}`;ch.onclick=()=>{const same=selectedCat===c.key;document.querySelectorAll('.cat-chip').forEach(x=>x.classList.remove('sel'));selectedCat=same?'':(ch.classList.add('sel'),c.key);if(!same)ch.classList.add('sel');};wrap.appendChild(ch);});
+}
+function buildFeatureTags(){
+  const wrap=document.getElementById('featureTags');
+  FEATURE_TAGS.forEach(t=>{const tag=document.createElement('div');tag.className='media-tag';tag.textContent=t;tag.onclick=()=>{const idx=selectedFeatures.indexOf(t);if(idx===-1){selectedFeatures.push(t);tag.classList.add('sel');}else{selectedFeatures.splice(idx,1);tag.classList.remove('sel');}};wrap.appendChild(tag);});
+}
+function buildWallFilters(){
+  const wrap=document.getElementById('wallFilters');
+  ['All',...CATS.map(c=>c.key)].forEach(f=>{const btn=document.createElement('button');btn.className='wf-btn'+(f==='All'?' on':'');btn.textContent=f==='All'?'All':CATS.find(c=>c.key===f)?.icon+' '+f.split(' ')[0];btn.onclick=()=>{wallFilter=f;document.querySelectorAll('.wf-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');wallShown=9;renderWall();};wrap.appendChild(btn);});
+}
+function buildOverallStats(){
+  const el=document.getElementById('overallStars');
+  for(let i=0;i<5;i++){const s=document.createElement('span');s.className='sc-star';s.textContent=i<4?'★':'½';el.appendChild(s);}
+  document.getElementById('overallCount').textContent=allReviews.length+' reviews';
+  const bars=document.getElementById('ratingBars');bars.innerHTML='';
+  [5,4,3,2].forEach(r=>{const cnt=allReviews.filter(rv=>rv.rating===r).length,pct=cnt/allReviews.length*100;bars.innerHTML+=`<div class="scb-row"><span class="scb-num">${r}★</span><div class="scb-bar"><div class="scb-fill" style="width:${pct}%"></div></div><span class="scb-count">${cnt}</span></div>`;});
+}
+function updateCharCount(){
+  const len=document.getElementById('feedbackText').value.length;
+  document.getElementById('charCount').textContent=len+' / 600';
+  document.getElementById('charHint').textContent=len<30?'30 characters minimum':len>500?'Keep it concise!':'Looking good ✓';
+}
+
+/* ── RENDER WALL ── */
+function renderWall(){
+  const sort=document.getElementById('wallSort').value;
+  let data=[...allReviews];
+  if(wallFilter!=='All')data=data.filter(r=>r.cat===wallFilter);
+  if(sort==='helpful')data.sort((a,b)=>b.helpful-a.helpful);
+  else if(sort==='rating-high')data.sort((a,b)=>b.rating-a.rating);
+  else if(sort==='rating-low')data.sort((a,b)=>a.rating-b.rating);
+  document.getElementById('wallCountBadge').textContent=`(${data.length} reviews)`;
+  const grid=document.getElementById('wallGrid');grid.innerHTML='';
+  const visible=data.slice(0,wallShown);
+  document.getElementById('loadMoreBtn').style.display=data.length>wallShown?'inline-flex':'none';
+  visible.forEach((rv,i)=>{
+    const card=document.createElement('div');card.className='review-card';
+    const stars=Array.from({length:5},(_,j)=>`<span class="rv-star-r ${j<rv.rating?'':'empty'}">${j<rv.rating?'★':'☆'}</span>`).join('');
+    const cat=CATS.find(c=>c.key===rv.cat)||CATS[7];
+    card.innerHTML=`
+      <div class="rv-header">
+        <div class="rv-user-info">
+          <div class="rv-avatar-big" style="background:${rv.avatar}22;color:${rv.avatar}">
+            ${rv.initials}
+            ${rv.verified?'<div class="rv-verified-badge">✓</div>':''}
+          </div>
+          <div class="rv-name-wrap">
+            <div class="rv-display-name">${rv.name}</div>
+            <div class="rv-meta-row">
+              ${rv.class?`<span class="rv-class-badge">${rv.class}</span>`:''}
+              ${rv.school?`<span class="rv-class-badge">${rv.school}</span>`:''}
+              ${rv.featured?'<span class="rv-feature-badge">⭐ Featured</span>':''}
+              <span class="rv-date-text">${rv.date}</span>
+            </div>
+          </div>
+        </div>
+        <div class="rv-stars-right">${stars}</div>
+      </div>
+      <div class="rv-category-tag" style="background:${cat.bg};color:${cat.color};border-color:${cat.border}">${cat.icon} ${rv.cat}</div>
+      <div class="rv-text">${rv.text}</div>
+      ${rv.highlight?`<div class="rv-highlight">"${rv.highlight}"</div>`:''}
+      ${rv.features.length?`<div class="rv-feature-tags">${rv.features.map(f=>`<span class="rv-ftag">${f}</span>`).join('')}</div>`:''}
+      <div class="rv-reactions">
+        <button class="reaction-btn" onclick="react(${rv.id},'helpful',this)">👍 Helpful <span class="reaction-count">${rv.helpful}</span></button>
+        <button class="reaction-btn" onclick="react(${rv.id},'heart',this)">❤️ <span class="reaction-count">${rv.hearts}</span></button>
+        <button class="rv-reply-btn" onclick="toggleReply(${rv.id},this)">Reply</button>
+      </div>
+      <div class="reply-box" id="replyBox-${rv.id}">
+        <textarea class="reply-input" rows="2" placeholder="Write a reply…" id="replyInput-${rv.id}"></textarea>
+        <div class="reply-actions">
+          <button class="reply-cancel" onclick="toggleReply(${rv.id},null)">Cancel</button>
+          <button class="reply-submit" onclick="submitReply(${rv.id})">Reply</button>
+        </div>
+      </div>
+      ${rv.replies.length?`<div class="replies-list">${rv.replies.map(r=>`<div class="reply-item"><span class="reply-author">${r.author}</span>${r.text}</div>`).join('')}</div>`:'<div class="replies-list" id="repliesList-'+rv.id+'" style="display:none"></div>'}`;
+    grid.appendChild(card);
+    setTimeout(()=>card.classList.add('in'),i*45);
+  });
+}
+
+function react(id,type,btn){
+  const rv=allReviews.find(r=>r.id===id);
+  if(!rv)return;
+  btn.classList.toggle('reacted');
+  if(type==='helpful'){rv.helpful+=btn.classList.contains('reacted')?1:-1;btn.querySelector('.reaction-count').textContent=rv.helpful;}
+  if(type==='heart'){rv.hearts+=btn.classList.contains('reacted')?1:-1;btn.querySelector('.reaction-count').textContent=rv.hearts;if(btn.classList.contains('reacted')){btn.style.transform='scale(1.3)';setTimeout(()=>btn.style.transform='',200);}}
+}
+function toggleReply(id,btn){
+  const box=document.getElementById(`replyBox-${id}`);
+  box.classList.toggle('open');
+  if(box.classList.contains('open'))box.querySelector('.reply-input').focus();
+}
+function submitReply(id){
+  const inp=document.getElementById(`replyInput-${id}`);
+  if(!inp.value.trim())return;
+  const rv=allReviews.find(r=>r.id===id);
+  const name=document.getElementById('pName').value.trim()||'Anonymous';
+  rv.replies.push({author:name,text:inp.value.trim()});
+  inp.value='';
+  document.getElementById(`replyBox-${id}`).classList.remove('open');
+  renderWall();
+  toast('Reply posted!','lime');
+}
+function loadMore(){wallShown+=6;renderWall();}
+
+/* ── SUBMIT ── */
+function submitFeedback(){
+  const text=document.getElementById('feedbackText').value.trim();
+  if(!userRating){toast('Please select a star rating','amber');return;}
+  if(text.length<20){toast('Please write at least 20 characters','amber');return;}
+  const name=document.getElementById('pName').value.trim()||'Anonymous';
+  const cls=document.getElementById('pClass').value.trim();
+  const school=document.getElementById('pSchool').value.trim();
+  const cat=selectedCat||'General';
+  const initials=name==='Anonymous'?'?':name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const newRv={id:Date.now(),name,class:cls,school,rating:userRating,cat,text,highlight:'',features:[...selectedFeatures],helpful:0,hearts:0,replies:[],date:'Just now',avatar:selectedAvatarColor,initials,featured:false,verified:false};
+  allReviews.unshift(newRv);
+  // reset
+  userRating=0;highlightStars(0);selectedCat='';selectedFeatures=[];
+  document.getElementById('feedbackText').value='';document.getElementById('pName').value='';document.getElementById('pClass').value='';document.getElementById('pSchool').value='';
+  document.getElementById('charCount').textContent='0 / 600';
+  document.querySelectorAll('.cat-chip,.media-tag').forEach(e=>e.classList.remove('sel'));
+  document.getElementById('ratingLabel').textContent='Click a star to rate';
+  document.getElementById('successBanner').classList.add('show');
+  setTimeout(()=>document.getElementById('successBanner').classList.remove('show'),4000);
+  buildOverallStats();
+  wallShown=9;renderWall();
+  toast('🎉 Your feedback is live!','lime');
+}
+
+/* ── THEME ── */
+const tt=document.getElementById('tt'),html=document.documentElement;let dk=true;
+tt.onclick=()=>{dk=!dk;html.setAttribute('data-theme',dk?'dark':'light');tt.textContent=dk?'🌙':'☀️';tt.style.transform='scale(1.15) rotate(22deg)';setTimeout(()=>tt.style.transform='',280);};
+
+/* ── TOAST ── */
+function toast(msg,color='lime'){const s=document.getElementById('toastStack'),t=document.createElement('div');t.className='toast-item';t.innerHTML=`<span class="t-dot ${color}"></span><span>${msg}</span>`;s.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},3200);}
+
+/* ── SCROLL REVEAL ── */
+document.querySelectorAll('.rev').forEach(el=>new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');o.unobserve(e.target);}}),{threshold:.1}).observe(el));
+
+/* ── INIT ── */
+buildAvatarPicker();buildStarRow();buildCatChips();buildFeatureTags();buildWallFilters();buildOverallStats();renderWall();
+</script>
+</body>
+</html>

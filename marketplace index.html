@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VidyaOS — Second Brain for CBSE Students</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="shared.css"/>
+  <style>
+    body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 700px 450px at 5% -5%,rgba(125,206,148,.08),transparent),radial-gradient(ellipse 500px 350px at 95% 60%,rgba(125,206,148,.05),transparent);}
+    .hero{max-width:1060px;margin:0 auto;padding:86px 32px 64px;display:grid;grid-template-columns:1fr 400px;gap:52px;align-items:center;}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid rgba(125,206,148,.3);border-radius:100px;background:rgba(125,206,148,.08);margin-bottom:22px;opacity:0;animation:rise .4s var(--ease-out) .15s forwards;}
+    .edot{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);animation:pdot 2.2s ease infinite;}
+    @keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+    .etxt{font-size:11px;font-weight:700;color:var(--lime);letter-spacing:.1em;text-transform:uppercase;}
+    .hero-head{font-size:clamp(36px,5.2vw,62px);font-weight:800;line-height:1.06;letter-spacing:-.025em;color:var(--text);opacity:0;animation:rise .5s var(--ease-out) .25s forwards;}
+    .hero-line2{display:flex;align-items:baseline;gap:.3em;white-space:nowrap;line-height:1.1;}
+    .carousel-clip{display:inline-block;overflow:hidden;vertical-align:bottom;height:1.1em;}
+    .carousel-inner{display:flex;flex-direction:column;transition:transform .5s cubic-bezier(.4,0,.2,1);will-change:transform;}
+    .c-item{display:flex;align-items:center;height:1.1em;font-size:clamp(36px,5.2vw,62px);font-weight:800;letter-spacing:-.025em;white-space:nowrap;}
+    .c-item:nth-child(1){color:var(--lime);}.c-item:nth-child(2){color:#f0a030;}.c-item:nth-child(3){color:#e0607a;}.c-item:nth-child(4){color:#60c8e8;}
+    .hero-sub{font-size:17px;font-weight:400;line-height:1.65;color:var(--text2);margin:20px 0 30px;max-width:450px;opacity:0;animation:rise .5s var(--ease-out) .45s forwards;}
+    .hero-btns{display:flex;gap:11px;opacity:0;animation:rise .5s var(--ease-out) .55s forwards;}
+    .blg{padding:13px 28px;font-size:14px;border-radius:11px;}
+    .blgg{padding:12px 22px;font-size:14px;border-radius:11px;border:1px solid var(--border2);}
+    .hcard{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;opacity:0;transform:translateY(22px) scale(.98);animation:crise .6s var(--ease-out) .5s forwards;transition:background .3s,border-color .3s;}
+    @keyframes crise{to{opacity:1;transform:none}}
+    .hctop{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .hclbl{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;}
+    .wdots{display:flex;gap:5px;}.wd{width:9px;height:9px;border-radius:50%;}
+    .hcbody{padding:20px 18px;}
+    .mpill{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:transform .22s var(--ease),border-color .22s;will-change:transform;}
+    .mpill:hover{transform:translateY(-3px);border-color:rgba(125,206,148,.35);}
+    .micon{width:38px;height:38px;border-radius:9px;background:var(--lime-soft);border:1px solid rgba(125,206,148,.2);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:12px;}
+    .mname{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .mdesc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:10px;}
+    .mcta{font-size:11px;font-weight:700;color:var(--lime);letter-spacing:.06em;text-transform:uppercase;display:inline-flex;align-items:center;gap:4px;transition:gap .18s;cursor:pointer;}
+    .mcta:hover{gap:8px;}
+    .sdots{display:flex;gap:5px;margin-top:16px;justify-content:center;}
+    .sdot{width:20px;height:3px;border-radius:2px;background:var(--border2);cursor:pointer;transition:background .2s,width .25s var(--ease);}
+    .sdot.on{background:var(--lime);width:30px;}
+    .feats{max-width:1060px;margin:0 auto;padding:0 32px 80px;}
+    .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+    .fc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;text-decoration:none;display:block;position:relative;overflow:hidden;transition:transform .22s var(--ease),border-color .22s,background .3s;will-change:transform;opacity:0;transform:translateY(16px);}
+    .fc::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,var(--lime-soft),transparent 55%);opacity:0;transition:opacity .28s;}
+    .fc:hover{transform:translateY(-4px);border-color:rgba(125,206,148,.28);}.fc:hover::after{opacity:1;}
+    .fc.in{animation:rise .45s var(--ease-out) forwards;}
+    .fi{width:42px;height:42px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px;transition:background .22s,border-color .22s;position:relative;z-index:1;}
+    .fc:hover .fi{background:var(--lime-soft);border-color:rgba(125,206,148,.3);}
+    .fn{font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px;position:relative;z-index:1;}
+    .fd{font-size:12px;color:var(--text2);line-height:1.65;position:relative;z-index:1;}
+    .fa{position:absolute;bottom:17px;right:17px;z-index:1;font-size:13px;color:var(--text3);opacity:0;transform:translate(-4px,4px);transition:opacity .18s,transform .18s;}
+    .fc:hover .fa{opacity:1;transform:none;}
+    .pxs{max-width:1060px;margin:0 auto;padding:0 32px 80px;}
+    .pxstage{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:background .3s,border-color .3s;}
+    .pxtop{padding:26px 30px 18px;}.pxtop h3{font-size:19px;font-weight:800;color:var(--text);margin-bottom:2px;}.pxtop p{font-size:12px;color:var(--text3);}
+    .rs{position:relative;height:170px;background:#2d5e31;overflow:hidden;}
+    #gc{display:block;width:100%;height:100%;image-rendering:pixelated;position:absolute;top:0;left:0;}
+    .rstrip{position:absolute;bottom:0;width:100%;height:70px;background:#3e3e3e;z-index:3;}
+    .rstrip::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:#c89a14;}
+    .rstrip::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:#c89a14;}
+    .rdashes{position:absolute;top:50%;width:200%;height:5px;transform:translateY(-50%);display:flex;animation:rdsh 1.7s linear infinite;z-index:4;}
+    @keyframes rdsh{from{transform:translateY(-50%) translateX(0)}to{transform:translateY(-50%) translateX(-50%)}}
+    .rd{width:50px;height:5px;background:#f0c830;margin-right:20px;border-radius:2px;flex-shrink:0;}
+    .pavs{position:absolute;bottom:20px;left:28px;display:flex;gap:12px;z-index:5;}
+    canvas.av{image-rendering:pixelated;width:52px;height:52px;display:block;}
+    .ctasec{max-width:1060px;margin:0 auto;padding:0 32px 90px;}
+    .ctain{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:56px 44px;text-align:center;position:relative;overflow:hidden;transition:background .3s,border-color .3s;}
+    .ctain::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:500px;height:1px;background:linear-gradient(90deg,transparent,var(--lime),transparent);}
+    .ctag{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:340px;height:160px;background:radial-gradient(ellipse,var(--lime-glow),transparent 70%);pointer-events:none;}
+    .ctah{font-size:clamp(24px,4vw,44px);font-weight:800;letter-spacing:-.025em;color:var(--text);margin-bottom:11px;position:relative;}
+    .ctas{font-size:15px;color:var(--text2);margin-bottom:30px;position:relative;}
+    .ctabtns{display:flex;align-items:center;justify-content:center;gap:12px;position:relative;}
+    @media(max-width:860px){.hero{grid-template-columns:1fr;padding:60px 24px 48px;}.hcard{display:none;}.fg{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:540px){.fg{grid-template-columns:1fr;}.ctain{padding:36px 22px;}.ctabtns{flex-direction:column;}}
+  </style>
+</head>
+<body>
+<nav style="animation:sdown .45s ease forwards;">
+  <div class="ni">
+    <a href="index.html" class="brand"><span class="bn">VidyaOS</span><span class="bt">Second Brain for CBSE Students</span></a>
+    <div class="nr">
+      <button class="tt" id="tt" aria-label="Toggle theme">🌙</button>
+      <a href="marketplace.html" class="btn bg_">Marketplace</a>
+      <a href="#" class="btn bg_">Login</a>
+      <a href="#" class="btn bp">Get Started</a>
+    </div>
+  </div>
+</nav>
+<section class="hero">
+  <div>
+    <div class="eyebrow"><div class="edot"></div><span class="etxt">AI Learning Operating System</span></div>
+    <div class="hero-head">
+      CBSE learning,<br>
+      <div class="hero-line2">
+        <span>now&nbsp;</span>
+        <span class="carousel-clip" id="clip">
+          <span class="carousel-inner" id="ci">
+            <span class="c-item">smarter.</span>
+            <span class="c-item">faster.</span>
+            <span class="c-item">together.</span>
+            <span class="c-item">yours.</span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <p class="hero-sub">Plan your syllabus, ask Vidya your doubts, track your streak. Everything a CBSE student needs — in one place.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn bp blg">Launch Dashboard →</a>
+      <a href="#features" class="btn bg_ blgg">See what's inside</a>
+    </div>
+  </div>
+  <div class="hcard">
+    <div class="hctop"><span class="hclbl">Live module preview</span><div class="wdots"><div class="wd" style="background:#ff5f57"></div><div class="wd" style="background:#ffbd2e"></div><div class="wd" style="background:#28c840"></div></div></div>
+    <div class="hcbody">
+      <div class="mpill"><div class="micon" id="hi">🧠</div><div class="mname" id="hn">AI Doubt Solver</div><div class="mdesc" id="hd">Get CBSE-structured answers with steps, formulas, and exam tips.</div><span class="mcta">Open module →</span></div>
+      <div class="sdots" id="sd"></div>
+    </div>
+  </div>
+</section>
+<section class="feats" id="features">
+  <div class="sh rev"><span class="slbl">Everything you need</span><div class="sttl">One OS. Every tool.</div><div class="ssub">Purpose-built modules for CBSE students, working together seamlessly.</div></div>
+  <div class="fg">
+    <a href="#" class="fc" data-d="0"><div class="fi">🚀</div><div class="fn">Dashboard</div><div class="fd">Your AI command centre. Streaks, tasks, Vidya — one glance.</div><div class="fa">↗</div></a>
+    <a href="#" class="fc" data-d="1"><div class="fi">⚡</div><div class="fn">Tasks</div><div class="fd">Drag-drop sessions with focus timers and syllabus awareness.</div><div class="fa">↗</div></a>
+    <a href="#" class="fc" data-d="2"><div class="fi">💾</div><div class="fn">Memory</div><div class="fd">Smart notes, AI summaries, and spaced-repetition flashcards.</div><div class="fa">↗</div></a>
+    <a href="#" class="fc" data-d="3"><div class="fi">📊</div><div class="fn">Analytics</div><div class="fd">XP, streaks, and growth charts that mean something.</div><div class="fa">↗</div></a>
+    <a href="marketplace.html" class="fc" data-d="4"><div class="fi">🛒</div><div class="fn">Marketplace</div><div class="fd">Buy and sell CBSE notes, books, and study packs — peer to peer.</div><div class="fa">↗</div></a>
+    <a href="#" class="fc" data-d="5"><div class="fi">🔥</div><div class="fn">Streak</div><div class="fd">Daily goals, XP rewards, streak shields to keep momentum.</div><div class="fa">↗</div></a>
+  </div>
+</section>
+<section class="pxs">
+  <div class="pxstage rev">
+    <div class="pxtop"><h3>Pixel Crew</h3><p>Your learning world, now with game-like identity vibes.</p></div>
+    <div class="rs"><canvas id="gc"></canvas><div class="rstrip"><div class="rdashes" id="rdashes"></div></div><div class="pavs" id="pav"></div></div>
+  </div>
+</section>
+<section class="ctasec">
+  <div class="ctain rev">
+    <div class="ctag"></div>
+    <h2 class="ctah">Ready to learn like you mean it?</h2>
+    <p class="ctas">The OS that grows with you — from Class 9 to Board exams.</p>
+    <div class="ctabtns">
+      <a href="#" class="btn bp" style="padding:14px 32px;font-size:15px;border-radius:12px;">Get Started Free →</a>
+      <a href="feedback.html" class="btn bg_" style="padding:13px 22px;font-size:14px;border-radius:12px;">Share feedback</a>
+    </div>
+  </div>
+</section>
+<footer><div class="fi2"><span class="fbrand">VidyaOS</span><div class="flinks"><a href="index.html">Home</a><a href="marketplace.html">Marketplace</a><a href="feedback.html">Feedback</a></div><span class="fcopy">© 2025 VidyaOS</span></div></footer>
+<script>
+const tt=document.getElementById('tt'),h=document.documentElement;let dk=true;
+tt.onclick=()=>{dk=!dk;h.setAttribute('data-theme',dk?'dark':'light');tt.textContent=dk?'🌙':'☀️';tt.style.transform='scale(1.15) rotate(22deg)';setTimeout(()=>tt.style.transform='',280);};
+// CAROUSEL — JS translateY on fixed item heights
+const items=[...document.querySelectorAll('.c-item')];
+const inner=document.getElementById('ci'),clip=document.getElementById('clip');
+let cidx=0;
+function setClip(){const h2=items[0].offsetHeight;clip.style.height=h2+'px';let maxW=0;items.forEach(it=>{maxW=Math.max(maxW,it.scrollWidth);});clip.style.width=maxW+'px';}
+function nextC(){cidx=(cidx+1)%items.length;inner.style.transform=`translateY(-${cidx*items[0].offsetHeight}px)`;}
+setTimeout(()=>{setClip();setInterval(nextC,2400);},300);
+window.addEventListener('resize',setClip,{passive:true});
+// REVEAL
+document.querySelectorAll('.rev').forEach(el=>new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');o.unobserve(e.target);}}),{threshold:.1}).observe(el));
+document.querySelectorAll('.fc').forEach(c=>new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),+e.target.dataset.d*70);o.unobserve(e.target);}}),{threshold:.08}).observe(c));
+// SLIDES
+const sls=[{i:'🧠',n:'AI Doubt Solver',d:'CBSE answers with steps, formulas, exam tips.'},{i:'📅',n:'Focus Planner',d:'Plan sessions, run focus mode, keep streak alive.'},{i:'📚',n:'Memory Bank',d:'Notes, summaries, flashcards — synced everywhere.'}];
+const sdEl=document.getElementById('sd'),hI=document.getElementById('hi'),hN=document.getElementById('hn'),hD=document.getElementById('hd'),pill=document.querySelector('.mpill');
+let cur=0;sls.forEach((_,i)=>{const d=document.createElement('div');d.className='sdot'+(i===0?' on':'');d.onclick=()=>go(i);sdEl.appendChild(d);});
+function go(i){cur=i;pill.style.cssText='opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;';setTimeout(()=>{const s=sls[i];hI.textContent=s.i;hN.textContent=s.n;hD.textContent=s.d;pill.style.cssText='opacity:1;transform:none;transition:opacity .22s,transform .22s;';document.querySelectorAll('.sdot').forEach((d,j)=>d.classList.toggle('on',j===i));},130);}
+setInterval(()=>go((cur+1)%sls.length),3400);
+// ROAD
+const rd=document.getElementById('rdashes');for(let i=0;i<48;i++){const d=document.createElement('div');d.className='rd';rd.appendChild(d);}
+// SPRITES
+function mkS(pal,px){const c=document.createElement('canvas');c.width=16;c.height=16;c.className='av';const ctx=c.getContext('2d');px.forEach((r,y)=>r.forEach((p,x)=>{if(p>0){ctx.fillStyle=pal[p-1];ctx.fillRect(x,y,1,1);}}));return c;}
+[{pal:['#3a5fcd','#ffcc44','#e08080'],px:[[0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,0,1,2,2,2,2,2,1,0,0,0,0,0],[0,0,0,1,2,3,3,3,3,2,1,0,0,0,0,0],[0,0,0,1,2,3,2,2,3,2,1,0,0,0,0,0],[0,0,0,0,1,2,2,2,2,1,0,0,0,0,0,0],[0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],[0,0,1,1,1,0,0,1,1,0,0,1,1,0,0,0],[0,0,1,1,0,0,0,1,1,0,0,0,1,0,0,0],[0,0,1,1,0,0,0,1,1,0,0,0,1,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]},{pal:['#cc3333','#ffd700','#ffb880'],px:[[0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0],[0,0,0,1,2,2,2,2,2,2,2,1,0,0,0,0],[0,0,1,2,3,3,2,2,3,3,2,2,1,0,0,0],[0,0,1,2,3,2,2,2,2,3,2,2,1,0,0,0],[0,0,1,1,2,2,2,2,2,2,1,1,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],[0,0,1,1,0,1,1,1,1,0,1,1,0,0,0,0],[0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0],[0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]},{pal:['#2d8c3e','#ffe066','#d4a860'],px:[[0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,0,1,2,2,2,2,2,1,0,0,0,0,0],[0,0,0,1,2,3,3,2,3,3,2,1,0,0,0,0],[0,0,0,1,2,3,2,2,2,3,2,1,0,0,0,0],[0,0,0,0,1,2,2,2,2,2,1,0,0,0,0,0],[0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,1,1,0,1,1,1,0,1,1,0,0,0,0],[0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],[0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]},{pal:['#7c3acd','#ffd700','#f0a0d0'],px:[[0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,0,1,2,2,2,2,1,0,0,0,0,0,0],[0,0,0,1,2,3,2,2,3,2,1,0,0,0,0,0],[0,0,0,1,2,2,3,3,2,2,1,0,0,0,0,0],[0,0,0,0,1,2,2,2,2,1,0,0,0,0,0,0],[0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],[0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],[0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0],[0,0,0,1,0,1,1,1,1,0,1,0,0,0,0,0],[0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],[0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]}].forEach(s=>document.getElementById('pav').appendChild(mkS(s.pal,s.px)));
+// GRASS
+const gC=document.getElementById('gc'),gx=gC.getContext('2d'),PX=4,GC=['#1b6120','#268a2c','#31aa38','#3cc444','#165619','#23742a'],TC=['#4ed458','#62e86c','#40c44a'];
+function ig(){gC.width=gC.offsetWidth||900;gC.height=gC.offsetHeight||100;return bl();}
+function bl(){const bs=[];for(let x=0;x<gC.width+PX*2;x+=PX*2)bs.push({x,col:GC[Math.floor(Math.random()*GC.length)],tip:TC[Math.floor(Math.random()*TC.length)],h:(3+Math.floor(Math.random()*5))*PX,phase:Math.random()*Math.PI*2,speed:.7+Math.random()*.9,sway:PX*(.4+Math.random()*.85)});return bs;}
+let blades=ig(),raf;
+function dg(ts){const t=ts/1000;gx.clearRect(0,0,gC.width,gC.height);gx.fillStyle='#1e5222';gx.fillRect(0,gC.height-PX,gC.width,PX);blades.forEach(b=>{const sw=Math.sin(t*b.speed+b.phase)*b.sway,st=Math.floor(b.h/PX);for(let i=0;i<st-1;i++){const px=Math.round((b.x+sw*(i/st))/PX)*PX,py=gC.height-(i+1)*PX;gx.fillStyle=b.col;gx.fillRect(px,py,PX,PX);}gx.fillStyle=b.tip;gx.fillRect(Math.round((b.x+sw)/PX)*PX,gC.height-b.h,PX,PX);});raf=requestAnimationFrame(dg);}
+raf=requestAnimationFrame(dg);
+window.addEventListener('resize',()=>{cancelAnimationFrame(raf);blades=ig();raf=requestAnimationFrame(dg);},{passive:true});
+</script>
+</body>
+</html>
