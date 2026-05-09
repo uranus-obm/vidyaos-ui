@@ -179,6 +179,180 @@ let blades=ig(),raf;
 function dg(ts){const t=ts/1000;gx.clearRect(0,0,gC.width,gC.height);gx.fillStyle='#1e5222';gx.fillRect(0,gC.height-PX,gC.width,PX);blades.forEach(b=>{const sw=Math.sin(t*b.speed+b.phase)*b.sway,st=Math.floor(b.h/PX);for(let i=0;i<st-1;i++){const px=Math.round((b.x+sw*(i/st))/PX)*PX,py=gC.height-(i+1)*PX;gx.fillStyle=b.col;gx.fillRect(px,py,PX,PX);}gx.fillStyle=b.tip;gx.fillRect(Math.round((b.x+sw)/PX)*PX,gC.height-b.h,PX,PX);});raf=requestAnimationFrame(dg);}
 raf=requestAnimationFrame(dg);
 window.addEventListener('resize',()=>{cancelAnimationFrame(raf);blades=ig();raf=requestAnimationFrame(dg);},{passive:true});
+  <!-- Pricing Section Start -->
+<section id="pricing" class="min-h-screen bg-zinc-50 font-sans text-zinc-900 selection:bg-indigo-100 selection:text-indigo-900 pb-20">
+  <!-- Header Section -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 text-sm font-medium mb-6 font-mono">
+      <span class="flex h-2 w-2 rounded-full bg-indigo-600"></span>
+      VidyaOS v2.0 Pricing
+    </div>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-4">
+      Ready to learn like you mean it?
+    </h1>
+    <p class="text-lg text-zinc-600 max-w-2xl mx-auto mb-10">
+      The OS that grows with you — from Class 9 to Board exams. Compare our plans and choose the blueprint that fits your study style.
+    </p>
+
+    <!-- Billing Toggle -->
+    <div class="flex items-center justify-center gap-3">
+      <span id="monthly-label" class="text-sm font-medium text-zinc-500 transition-colors">Monthly</span>
+      <button id="billing-toggle" class="relative inline-flex h-6 w-11 items-center rounded-full bg-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <span id="toggle-thumb" class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform translate-x-6"></span>
+      </button>
+      <span id="yearly-label" class="text-sm font-medium flex items-center gap-2 text-zinc-900 transition-colors">
+        Yearly <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold leading-none tracking-wide uppercase">Save 20%</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Pricing Comparison Table Desktop -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 hidden lg:block">
+    <table class="w-full text-left border-collapse">
+      <thead class="sticky top-0 bg-zinc-50/90 backdrop-blur-md z-10">
+        <tr>
+          <th class="w-1/4 pb-8 pl-4 pr-4 align-bottom">
+            <div class="text-xl font-bold font-mono tracking-tight">Compare plans</div>
+          </th>
+          
+          <!-- Starter Plan -->
+          <th class="w-1/4 pb-8 px-4 text-center align-bottom relative">
+            <div class="rounded-3xl p-6 border border-zinc-200 bg-white">
+              <h3 class="text-lg font-bold text-zinc-900 mb-2">Starter</h3>
+              <div class="flex items-baseline justify-center gap-1 mb-4 h-[40px]">
+                <span class="text-4xl font-bold tracking-tight text-zinc-900">Free</span>
+              </div>
+              <p class="text-xs text-zinc-500 mb-6 h-8 text-balance">Get organized and track your syllabus.</p>
+              <button class="plan-btn w-full py-2.5 px-4 rounded-xl font-semibold text-sm transition-all bg-zinc-800 text-white hover:bg-zinc-700">
+                <span class="btn-text">Get Started</span>
+              </button>
+            </div>
+          </th>
+
+          <!-- Pro Plan -->
+          <th class="w-1/4 pb-8 px-4 text-center align-bottom relative">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-6">
+              <span class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Most Popular</span>
+            </div>
+            <div class="rounded-3xl p-6 border border-indigo-200 bg-white shadow-xl shadow-indigo-900/5">
+              <h3 class="text-lg font-bold text-zinc-900 mb-2">Pro</h3>
+              <div class="flex items-baseline justify-center gap-1 mb-4 h-[40px]">
+                <span class="price-val text-4xl font-bold tracking-tight text-zinc-900 transition-opacity duration-200" data-monthly="₹299" data-yearly="₹239">₹239</span>
+                <span class="text-sm text-zinc-500 font-medium">/mo</span>
+              </div>
+              <p class="text-xs text-zinc-500 mb-6 h-8 text-balance">Unlock Vidya AI and spaced-repetition.</p>
+              <button class="plan-btn w-full py-2.5 px-4 rounded-xl font-semibold text-sm transition-all bg-indigo-600 text-white hover:bg-indigo-500 shadow-lg">
+                <span class="btn-text">Upgrade to Pro</span>
+              </button>
+            </div>
+          </th>
+
+          <!-- Legend Plan -->
+          <th class="w-1/4 pb-8 px-4 text-center align-bottom relative">
+            <div class="rounded-3xl p-6 border border-zinc-200 bg-white">
+              <h3 class="text-lg font-bold text-zinc-900 mb-2">Legend</h3>
+              <div class="flex items-baseline justify-center gap-1 mb-4 h-[40px]">
+                <span class="price-val text-4xl font-bold tracking-tight text-zinc-900 transition-opacity duration-200" data-monthly="₹599" data-yearly="₹479">₹479</span>
+                <span class="text-sm text-zinc-500 font-medium">/mo</span>
+              </div>
+              <p class="text-xs text-zinc-500 mb-6 h-8 text-balance">The ultimate OS for 95%+ board achievers.</p>
+              <button class="plan-btn w-full py-2.5 px-4 rounded-xl font-semibold text-sm transition-all bg-zinc-800 text-white hover:bg-zinc-700">
+                <span class="btn-text">Go Legend</span>
+              </button>
+            </div>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-zinc-200 border-t border-zinc-200">
+        <tr><th colspan="4" class="py-6 pl-4 text-sm font-bold tracking-wider text-zinc-900 uppercase pt-12">Features</th></tr>
+        <!-- Row 1 -->
+        <tr class="hover:bg-black/[0.02] transition-colors">
+          <td class="py-4 pl-4 pr-4 border-b border-zinc-100 text-sm font-medium text-zinc-700">Smart Notes Storage</td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><span class="text-zinc-900 font-medium font-mono text-sm">50 Notes</span></td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><span class="text-zinc-900 font-medium font-mono text-sm">Unlimited</span></td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><span class="text-zinc-900 font-medium font-mono text-sm">Unlimited</span></td>
+        </tr>
+        <!-- Row 2 -->
+        <tr class="hover:bg-black/[0.02] transition-colors">
+          <td class="py-4 pl-4 pr-4 border-b border-zinc-100 text-sm font-medium text-zinc-700">AI Doubt Resolution</td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><span class="text-zinc-900 font-medium font-mono text-sm">10 / day</span></td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><span class="text-zinc-900 font-medium font-mono text-sm">Unlimited</span></td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><span class="text-zinc-900 font-medium font-mono text-sm">Unlimited</span></td>
+        </tr>
+        <!-- Row 3 -->
+        <tr class="hover:bg-black/[0.02] transition-colors">
+          <td class="py-4 pl-4 pr-4 border-b border-zinc-100 text-sm font-medium text-zinc-700">AI Chapter Summaries</td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><svg class="mx-auto h-5 w-5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line></svg></td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><svg class="mx-auto h-5 w-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+          <td class="py-4 px-4 text-center border-b border-zinc-100"><svg class="mx-auto h-5 w-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Include this script block at the end of your body tag (before </body>) -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let billingCycle = 'yearly';
+    const toggleBtn = document.getElementById('billing-toggle');
+    const thumb = document.getElementById('toggle-thumb');
+    const monthlyLabel = document.getElementById('monthly-label');
+    const yearlyLabel = document.getElementById('yearly-label');
+    const priceElements = document.querySelectorAll('.price-val');
+    
+    // Billing Toggle Animation
+    toggleBtn.addEventListener('click', () => {
+      billingCycle = billingCycle === 'yearly' ? 'monthly' : 'yearly';
+      
+      if (billingCycle === 'yearly') {
+        thumb.classList.remove('translate-x-1');
+        thumb.classList.add('translate-x-6');
+        yearlyLabel.classList.replace('text-zinc-500', 'text-zinc-900');
+        monthlyLabel.classList.replace('text-zinc-900', 'text-zinc-500');
+      } else {
+        thumb.classList.remove('translate-x-6');
+        thumb.classList.add('translate-x-1');
+        monthlyLabel.classList.replace('text-zinc-500', 'text-zinc-900');
+        yearlyLabel.classList.replace('text-zinc-900', 'text-zinc-500');
+      }
+
+      // Fade out prices
+      priceElements.forEach(el => el.style.opacity = '0');
+      
+      // Update values and fade in
+      setTimeout(() => {
+        priceElements.forEach(el => {
+          el.innerText = el.getAttribute(`data-${billingCycle}`);
+          el.style.opacity = '1';
+        });
+      }, 200);
+    });
+
+    // Button Click Animation
+    const buttons = document.querySelectorAll('.plan-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const textSpan = this.querySelector('.btn-text');
+        const originalText = textSpan.innerText;
+        
+        // Scale down effect
+        this.style.transform = 'scale(0.95)';
+        
+        setTimeout(() => {
+          this.style.transform = 'scale(1)';
+          textSpan.innerHTML = `<svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Selected`;
+          
+          // Reset after 2s
+          setTimeout(() => {
+             textSpan.innerText = originalText;
+          }, 2000);
+        }, 150);
+      });
+    });
+  });
+</script>
 </script>
 </body>
 </html>
